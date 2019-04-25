@@ -28,7 +28,7 @@ public class CreateMaterialView extends SchemaCommand {
     private boolean force;
     private boolean isTableExpression;
 
-    public CreateView(Session session, Schema schema) {
+    public CreateMaterialView(Session session, Schema schema) {
         super(session, schema);
     }
 
@@ -46,6 +46,9 @@ public class CreateMaterialView extends SchemaCommand {
 
     public void setSelectSQL(String selectSQL) {
         this.selectSQL = selectSQL;
+        /* TODO: Possibly throw a create table in here
+            when this is set.
+        */
     }
 
     public void setColumnNames(String[] cols) {
@@ -70,10 +73,15 @@ public class CreateMaterialView extends SchemaCommand {
 
     @Override
     public int update() {
+        // Allow changes to db
         session.commit(true);
+        //
         session.getUser().checkAdmin();
+        //
         Database db = session.getDatabase();
+        //
         TableView view = null;
+        //
         Table old = getSchema().findTableOrView(session, viewName);
         if (old != null) {
             if (ifNotExists) {
