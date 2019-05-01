@@ -1,3 +1,19 @@
+Notes:
+*** Index recommendations ***
+Features to implement:
+1. Log sql statements
+2. Parse sql statements and check for frequent table and column
+3. 
+
+
+
+
+
+
+
+
+
+
 ## Welcome to GitHub Pages!
 
 You can use the [editor on GitHub](https://github.com/geraldomacias/dbms/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
