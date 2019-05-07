@@ -2,7 +2,9 @@
 ## Welcome to H4
 ### To build and run 
 0. Set JAVA_HOME environment variable
+
     a) Windows
+    
     b) (OSX) add the following to your ~/.bash_profile
         `export JAVA_HOME=$(/usr/libexec/java_home)` 
 1.  `cd h2`
