@@ -3,7 +3,7 @@
 ### To build and run 
 0. Set JAVA_HOME environment variable
 
-    a) Windows
+    a) (Windows) Follow directions at https://javatutorial.net/set-java-home-windows-10
     
     b) (OSX) add the following to your ~/.bash_profile
         `export JAVA_HOME=$(/usr/libexec/java_home)` 
