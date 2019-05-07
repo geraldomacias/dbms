@@ -10,7 +10,9 @@
 1.  `cd h2`
 2.  a) (Windows) `build jar`
 
-    b) (Unix/Windows) `./build.sh` then `./build.sh jar`
+    b) (Unix/Windows) `./build.sh jar`
+    
+    c) (OSX) `./build.sh` then `./build.sh jar`
 3. `cd bin`
 4. `java -jar h2-1.4.199.jar`
 
