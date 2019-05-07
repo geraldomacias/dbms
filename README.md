@@ -1,6 +1,6 @@
 
 ## Welcome to H4
-## To build and run 
+### To build and run 
 1.  cd h2
 2.  a) (Windows) build jar
     b) (Unix/Windows) ./build.sh jar
