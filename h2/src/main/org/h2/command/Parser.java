@@ -755,18 +755,17 @@ public class Parser {
         WORK HERE h4!!!
      */
     Prepared parse(String sql) {
-        if (sql.equals("log session;")) {
-            // Launch our code (sql)
-            // Set log to true
-            logger.log == true;
-            return null;
-        } else if (log == true && sql.equals("stop log;")) {
-            // Export sessions logs to file
-            logger.export();
-            logger.log = false;
-            return null;
+        System.out.println(sql);
+
+        if (sql.equals("CREATE LOGGER")) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("// ");
+            sb.append(sql);
+            sql = sb.toString();
+
+            // TODO: Call create logger function here
         }
-        // Look up what Prepard p does.
+
         Prepared p;
         try {
             // first, try the fast variant
@@ -781,10 +780,6 @@ public class Parser {
         }
         p.setPrepareAlways(recompileAlways);
         p.setParameterList(parameters);
-        // Copy the current sql statement if logging is turned on
-        if (logger.log == true) {
-            logger.log(sql);
-        }
         return p;
     }
 
