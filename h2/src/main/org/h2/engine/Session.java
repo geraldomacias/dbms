@@ -180,6 +180,7 @@ public class Session extends SessionWithState implements TransactionStore.Rollba
         this.currentSchemaName = mainSchema != null ? mainSchema.getName()
                 : database.sysIdentifier(Constants.SCHEMA_MAIN);
         this.columnNamerConfiguration = ColumnNamerConfiguration.getDefault();
+        this.logger = null;
     }
 
     public void setLazyQueryExecution(boolean lazyQueryExecution) {
@@ -587,6 +588,8 @@ public class Session extends SessionWithState implements TransactionStore.Rollba
      */
     public Prepared prepare(String sql, boolean rightsChecked, boolean literalsChecked) {
         Parser parser = new Parser(this);
+        // Add parser logger logic here
+        
         parser.setRightsChecked(rightsChecked);
         parser.setLiteralsChecked(literalsChecked);
         return parser.prepare(sql);

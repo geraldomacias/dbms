@@ -733,14 +733,14 @@ public class Parser {
      * @return the prepared object
         WORK HERE h4!!!
      */
-
     static boolean logging = false;
     Logger logger;
 
     Prepared parse(String sql) {
 
+        System.out.println("Current sql:" + sql);
 
-        if (sql.equalsIgnoreCase("BEGIN LOGGING")) {
+        if (sql.equalsIgnoreCase("begin logging")) {
             System.out.println("Begin logging block");
             StringBuilder sb = new StringBuilder();
             sb.append("// ");
@@ -751,7 +751,7 @@ public class Parser {
             logging = true;
         }
 
-        else if (sql.equalsIgnoreCase("END LOGGING")) {
+        else if (sql.equalsIgnoreCase("end logging")) {
             System.out.println("End logging block");
             StringBuilder sb = new StringBuilder();
             sb.append("// ");
