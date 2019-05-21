@@ -1,0 +1,2 @@
+select * from movies
+select budget from movies
