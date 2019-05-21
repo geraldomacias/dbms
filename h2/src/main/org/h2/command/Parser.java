@@ -63,6 +63,10 @@ import static org.h2.util.ParserUtil.WINDOW;
 import static org.h2.util.ParserUtil.WITH;
 import static org.h2.util.ParserUtil._ROWID_;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
@@ -734,38 +738,31 @@ public class Parser {
         WORK HERE h4!!!
      */
 
-    static boolean logging = false;
-    Logger logger;
-
     Prepared parse(String sql) {
+        File file = new File("loggedStatements.txt");
 
-
-        if (sql.equalsIgnoreCase("BEGIN LOGGING")) {
-            System.out.println("Begin logging block");
-            StringBuilder sb = new StringBuilder();
-            sb.append("// ");
-            sb.append(sql);
-            sql = sb.toString();
-
-            logger = new Logger();
-            logging = true;
+        if (sql.toLowerCase().startsWith("log ")) {
+            sql = sql.substring(3).trim();
+            try {
+                BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+                System.out.println("Logging " + sql);
+                writer.write(sql);
+                writer.newLine();
+                writer.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
-        else if (sql.equalsIgnoreCase("END LOGGING")) {
-            System.out.println("End logging block");
-            StringBuilder sb = new StringBuilder();
-            sb.append("// ");
-            sb.append(sql);
-            sql = sb.toString();
-
-            System.out.println(logger);
-            logger.analyze();
-            System.out.println("Logging finished");
-            logging = false;
-        }
-
-        else if (logging) {
-            logger.addStatement(sql);
+        if (sql.equalsIgnoreCase("clear log")) {
+            try {
+                System.out.println("Clearing log");
+                PrintWriter pw = new PrintWriter(file);
+                pw.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            sql = "// Clear log";
         }
 
         Prepared p;

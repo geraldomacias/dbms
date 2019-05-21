@@ -99,7 +99,7 @@ public class CommandContainer extends Command {
     }
 
     private void recompileIfRequired() {
-        if (prepared.needRecompile()) {
+        //if (prepared.needRecompile()) {
             // TODO test with 'always recompile'
             prepared.setModificationMetaId(0);
             String sql = prepared.getSQL();
@@ -120,7 +120,7 @@ public class CommandContainer extends Command {
             prepared.prepare();
             prepared.setModificationMetaId(mod);
             prepareJoinBatch();
-        }
+        //}
     }
 
     @Override
