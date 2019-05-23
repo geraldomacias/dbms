@@ -10,11 +10,11 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 
 
-public class lab1 {
+public class insertTables {
    public static void main(String[] args) {
       try{
          
-         File file = new File("out");
+         File file = new File("out1");
          BufferedWriter writer = new BufferedWriter(new FileWriter(file));
          
          int i = 0;

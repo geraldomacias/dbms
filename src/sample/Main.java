@@ -28,9 +28,14 @@ public class Main {
 
     public static void main (String[] args) throws SQLException {
         Connection con = getConnection();
-        Statement statement = con.createStatement();
+        //Statement statement = con.createStatement();
 
-        statement.execute("INSERT INTO Stats (speed, strength) VALUES (3, 3);");
+        //statement.execute("INSERT INTO Stats (speed, strength) VALUES (3, 3);");
+
+        ScriptRunner script = new ScriptRunner(con, true, true);
+
+        //script.runScript();// NOT DONE
+
 
         con.close();
     }
