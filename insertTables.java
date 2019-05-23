@@ -10,16 +10,13 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 
 
-public class insertTables {
+public class lab1 {
    public static void main(String[] args) {
       try{
          
-         File file = new File("insertStatements");
+         File file = new File("out");
          BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-         String[] arr = new String[1000];
-         int[] arr1 = new int[1000];
-         int[] own = new int[1000];
-         int[] own2 = new int[1000];
+         
          int i = 0;
          String temp;
          while(i < 10000){
@@ -124,3 +121,4 @@ public class insertTables {
       
    }
    
+}
