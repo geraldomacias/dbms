@@ -1,2 +1,4 @@
 select * from movies
-select budget from movies
+select * from movies
+select * from movies
+hello

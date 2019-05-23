@@ -5,6 +5,10 @@
  */
 package org.h2.jdbc;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -209,6 +213,37 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
     }
 
     private boolean executeInternal(String sql, Object generatedKeysRequest) throws SQLException {
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!executeInternal");
+        System.out.println(sql);
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+        File file = new File("loggedStatements.txt");
+
+        if (sql.toLowerCase().startsWith("log ")) {
+            sql = sql.substring(3).trim();
+            try {
+                BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+                System.out.println("Logging " + sql);
+                writer.write(sql);
+                writer.newLine();
+                writer.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (sql.equalsIgnoreCase("clear log")) {
+            try {
+                System.out.println("Clearing log");
+                PrintWriter pw = new PrintWriter(file);
+                pw.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            sql = "// Clear log";
+        }
+
+
         int id = getNextId(TraceObject.RESULT_SET);
         checkClosedForWrite();
         try {

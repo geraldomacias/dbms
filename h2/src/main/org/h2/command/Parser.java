@@ -739,32 +739,6 @@ public class Parser {
      */
 
     Prepared parse(String sql) {
-        File file = new File("loggedStatements.txt");
-
-        if (sql.toLowerCase().startsWith("log ")) {
-            sql = sql.substring(3).trim();
-            try {
-                BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
-                System.out.println("Logging " + sql);
-                writer.write(sql);
-                writer.newLine();
-                writer.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (sql.equalsIgnoreCase("clear log")) {
-            try {
-                System.out.println("Clearing log");
-                PrintWriter pw = new PrintWriter(file);
-                pw.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            sql = "// Clear log";
-        }
-
         Prepared p;
         try {
             // first, try the fast variant
