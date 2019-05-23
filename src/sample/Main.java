@@ -1,6 +1,6 @@
 package sample;
 
-import java.sql.Connection;
+import java.io.*;
 import java.sql.*;
 
 public class Main {
@@ -26,7 +26,7 @@ public class Main {
         }
     }
 
-    public static void main (String[] args) throws SQLException {
+    public static void main (String[] args) throws SQLException, IOException {
         Connection con = getConnection();
         //Statement statement = con.createStatement();
 
@@ -34,8 +34,11 @@ public class Main {
 
         ScriptRunner script = new ScriptRunner(con, true, true);
 
-        //script.runScript();// NOT DONE
+        Reader readerCommands =  new FileReader("commands.sql");
+        Reader readerCreate = new FileReader("createTables.sql");
 
+        script.runScript(readerCreate);
+        script.runScript(readerCommands);
 
         con.close();
     }
