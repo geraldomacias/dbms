@@ -218,7 +218,7 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
     // 1. count which tables are being used.
     // 2. Get a ratio of SELECT vs UPDATE&INSERT
     // 3. Keep track of fields from WHERE
-    private String indexFinder(String[] statements) {
+    private String indexFinder(ArrayList<String> statements) {
 
         return "";
     }
@@ -234,7 +234,7 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
             Scanner sc = new Scanner(file);
             StringBuilder sb = new StringBuilder();
             while (sc.hasNextLine()) {
-                String current = sc.getNextLine();
+                String current = sc.nextLine();
                 if (current.equalsIgnoreCase("<s>")) {
                     statements.add(sb.toString());
                     sb = new StringBuilder();
