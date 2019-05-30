@@ -218,8 +218,20 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
     // 1. count which tables are being used.
     // 2. Get a ratio of SELECT vs UPDATE&INSERT
     // 3. Keep track of fields from WHERE
+
+
+
+    // Search for select and update
+    // Select:
+    // <"Table.Column", frequency>
+    // convert hashmap into array with pairs
+    // Use comparator so we can sort.Array()
+    // Return top 10% of elements to user
     private String indexFinder(ArrayList<String> statements) {
 
+        HashMap<String, Intger> map = new HasMap<>();
+
+        //Helper function
         for (String statement : statements) {
             System.out.println("Statement: " + statement);
         }
