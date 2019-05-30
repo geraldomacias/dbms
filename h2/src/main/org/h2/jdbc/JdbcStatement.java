@@ -220,7 +220,11 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
     // 3. Keep track of fields from WHERE
     private String indexFinder(ArrayList<String> statements) {
 
-        return "";
+        for (String statement : statements) {
+            System.out.println("Statement: " + statement);
+        }
+
+        return " ";
     }
 
     // Given a file, this function parses sql statements.
@@ -229,6 +233,7 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
         String index = "";
         ArrayList<String> statements = new ArrayList<>();
 
+        System.out.println("Reading file");
         // Gather list of sql statements
         try {
             Scanner sc = new Scanner(file);
@@ -245,6 +250,9 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        System.out.println("File read complete");
+        System.out.println(statements);
 
         // Fake return for now (compile)
         return indexFinder(statements);
@@ -269,12 +277,9 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
         }
 
         //Evaluate log
-        if (sql.equalsIgnoreCase("evalutate log")) {
+        if (sql.equalsIgnoreCase("eval log")) {
             sql = "// " + getIndexRecommendation(file);
-        }
-
-        // Clear log
-        if (sql.equalsIgnoreCase("clear log")) {
+        } else if (sql.equalsIgnoreCase("clear log")) {
             try {
                 System.out.println("Clearing log");
                 PrintWriter pw = new PrintWriter(file);
