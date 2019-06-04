@@ -5,10 +5,7 @@
  */
 package org.h2.jdbc;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -301,7 +298,6 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
     }
 
 
-
     // Search for select and update
     // Select:
     // <"Table.Column", frequency>
@@ -312,7 +308,7 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
 
         HashMap<String, Integer> map = new HashMap<>();
         ArrayList<MySQL> sqls = new ArrayList<>();
-        String reccomendation;
+        String recommendation;
 
         //Helper function
         for (String statement : statements) {
@@ -321,10 +317,10 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
             sqls.add(temp);
         }
 
-        reccomendation = getMaxEntry(map);
+        recommendation = getMaxEntry(map);
         System.out.println("Inside index finder");
-        System.out.println("reccomendation: " + reccomendation);
-        return reccomendation;
+        System.out.println("recommendation: " + recommendation);
+        return recommendation;
     }
 
     // Given a hashmap, getMaxEntry returns the key with the largest value
@@ -346,49 +342,38 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
 
     // Given a file, this function parses sql statements.
     // Finally it recommends an index to be created and returns it to the user.
-    private String getIndexRecommendation(File file) {
-        String index = "";
+    private String getIndexRecommendation(File file) throws Exception {
         ArrayList<String> statements = new ArrayList<>();
+        BufferedReader in = new BufferedReader(new FileReader(file));
 
-        // Gather list of sql statements
-        try {
-            Scanner sc = new Scanner(file);
-            StringBuilder sb = new StringBuilder();
-            while (sc.hasNextLine()) {
-                String current = sc.nextLine();
-                if (current.equalsIgnoreCase("<s>")) {
-                    statements.add(sb.toString());
-                    sb = new StringBuilder();
-                } else if (!current.equals("\n")) {
-                    sb.append(" " + current);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        String line;
+        while ((line = in.readLine()) != null) {
+            statements.add(line);
         }
 
         return indexFinder(statements);
     }
 
-    private boolean executeInternal(String sql, Object generatedKeysRequest) throws SQLException {
-        File file = new File("loggedStatements.txt");
+    private boolean executeInternal(String sql, Object generatedKeysRequest) throws Exception {
+        final String filename = "loggedStatements.txt";
+        File file = new File(filename);
 
         // Log query to a file
         if (sql.toLowerCase().startsWith("log ")) {
             sql = sql.substring(3).trim();
             try {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
-                System.out.println("Logging " + sql);
-                writer.write(sql);
+                String loggedStatement = sql.replaceAll("\\s+"," ");
+                System.out.println("Logging " + loggedStatement);
+                writer.write(loggedStatement);
                 writer.newLine();
-                writer.write("<s>\n");
                 writer.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        //Evaluate log
+        // Evaluate log
         if (sql.equalsIgnoreCase("eval log")) {
             sql = "// Recommend building index on: " + getIndexRecommendation(file);
         } else if (sql.equalsIgnoreCase("clear log")) {

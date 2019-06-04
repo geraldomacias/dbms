@@ -1,0 +1,7 @@
+select * from movies
+select * from movies
+select * from movies
+select * from movies where budget='30000000'
+select * from movies where budget='30000000'
+select * from movies where budget='30000000'
+select * from movies where budget='30000000'

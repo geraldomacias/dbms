@@ -2,8 +2,8 @@ Manifest-Version: 1.0
 Implementation-Title: H2 Database Engine
 Implementation-URL: http://www.h2database.com
 Implementation-Version: 1.4.199
-Build-Jdk: 10
-Created-By: 10.0.2+13 ("Oracle Corporation")
+Build-Jdk: 1.8
+Created-By: 1.8.0_131-b11 (Oracle Corporation)
 Main-Class: org.h2.tools.Console
 Automatic-Module-Name: com.h2database
 Bundle-Activator: org.h2.util.DbDriverActivator
