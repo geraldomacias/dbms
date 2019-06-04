@@ -16,6 +16,12 @@
 3. `cd bin`
 4. `java -jar h2-1.4.199.jar`
 
+### To Test
+0. Use IntelliJ IDEA to open the repository.
+
+1. Run "java insertTables.java > commands.sql" in a terminal inside the dbms repository
+
+2. Run Main.java in IntelliJ and the time will be output below 
 
 Notes:
 *** Index recommendations ***
