@@ -28,17 +28,20 @@ public class Main {
 
     public static void main (String[] args) throws SQLException, IOException {
         Connection con = getConnection();
-        //Statement statement = con.createStatement();
-
-        //statement.execute("INSERT INTO Stats (speed, strength) VALUES (3, 3);");
 
         ScriptRunner script = new ScriptRunner(con, true, true);
 
         Reader readerCommands =  new FileReader("commands.sql");
         Reader readerCreate = new FileReader("createTables.sql");
 
+        long start = System.currentTimeMillis();
+
         script.runScript(readerCreate);
         script.runScript(readerCommands);
+
+        long end = System.currentTimeMillis();
+
+        float sec = (end - start) / 1000F; System.out.println(sec + " seconds");
 
         con.close();
     }

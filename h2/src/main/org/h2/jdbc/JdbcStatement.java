@@ -5,12 +5,20 @@
  */
 package org.h2.jdbc;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.HashMap;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 import org.h2.api.ErrorCode;
 import org.h2.command.CommandInterface;
 import org.h2.engine.SessionInterface;
@@ -23,6 +31,7 @@ import org.h2.result.SimpleResult;
 import org.h2.util.ParserUtil;
 import org.h2.util.StringUtils;
 import org.h2.util.Utils;
+
 
 /**
  * Represents a statement.
@@ -208,7 +217,192 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
         }
     }
 
+    public enum QueryType {
+        SELECT, INSERT, UPDATE, DELETE, UNKNOWN
+    }
+
+    // Given a list of sql statements, we must be able to:
+    // 1. count which tables are being used.
+    // 2. Get a ratio of SELECT vs UPDATE&INSERT
+    // 3. Keep track of fields from WHERE
+
+    class MySQL {
+
+        HashMap<String, Integer> map;
+        String sql, tblCol;
+        QueryType queryType;
+
+
+        public MySQL(HashMap<String, Integer> map, String sql) {
+            this.map = map;
+            this.sql = sql.toLowerCase();
+        }
+
+        // Parse the sql query and add Table.Column to the hashmap
+        // First iteration will not account for:
+        //      Table renames
+        //      Multiple tables
+        //      Multiple columns
+        //      Nested sql statements
+        // per single query
+        public void process() {
+            String tblCol;
+
+            queryType = processQueryType();
+
+            processTable();
+
+            appendToMap();
+
+        }
+
+        private void appendToMap() {
+            if (!map.containsKey(tblCol)) {
+                map.put(tblCol, 1);
+            } else {
+                map.put(tblCol, map.get(tblCol) + 1);
+            }
+        }
+
+        // Given a sql statement, locate the "from" and then get the next word as the table.
+        private void processTable() {
+            String table, column;
+            table = column = "n/a";
+
+            Pattern p = Pattern.compile("(from|where)\\s*(\\w+)");
+            Matcher m = p.matcher(sql);
+
+            while (m.find()) {
+                if (m.group(1).equals("from")) {
+                    table = m.group(2);
+                } else if (m.group(1).equals("where")) {
+                    column = m.group(2);
+                } else {
+                    System.out.println("Error: Found an invalid pattern:");
+                    System.out.println(m.group(1) + "\t" + m.group(2));
+                }
+            }
+            tblCol = table + "." + column;
+        }
+
+
+        // Given a sql string, return a QueryType depending if a
+        // select, update, delete, or insert is found.
+        private QueryType processQueryType() {
+
+            if (sql.contains("select")) return QueryType.SELECT;
+            else if (sql.contains("update")) return QueryType.UPDATE;
+            else if (sql.contains("delete")) return QueryType.DELETE;
+            else if (sql.contains("insert")) return QueryType.INSERT;
+            else return QueryType.UNKNOWN;
+        }
+
+
+    }
+
+
+
+    // Search for select and update
+    // Select:
+    // <"Table.Column", frequency>
+    // convert hashmap into array with pairs
+    // Use comparator so we can sort.Array()
+    // Return top 10% of elements to user
+    private String indexFinder(ArrayList<String> statements) {
+
+        HashMap<String, Integer> map = new HashMap<>();
+        ArrayList<MySQL> sqls = new ArrayList<>();
+        String reccomendation;
+
+        //Helper function
+        for (String statement : statements) {
+            MySQL temp = new MySQL(map, statement);
+            temp.process();
+            sqls.add(temp);
+        }
+
+        reccomendation = getMaxEntry(map);
+        System.out.println("Inside index finder");
+        System.out.println("reccomendation: " + reccomendation);
+        return reccomendation;
+    }
+
+    // Given a hashmap, getMaxEntry returns the key with the largest value
+    private String getMaxEntry(HashMap<String, Integer> map) {
+        System.out.println("Inside getMaxEntry");
+        System.out.println(map);
+
+        String maxKey = "not found";
+        int maxVal = 0;
+
+        for (String s : map.keySet()) {
+            if (map.get(s) >= maxVal) {
+                maxKey = s;
+                maxVal = map.get(s);
+            }
+        }
+        return maxKey;
+    }
+
+    // Given a file, this function parses sql statements.
+    // Finally it recommends an index to be created and returns it to the user.
+    private String getIndexRecommendation(File file) {
+        String index = "";
+        ArrayList<String> statements = new ArrayList<>();
+
+        // Gather list of sql statements
+        try {
+            Scanner sc = new Scanner(file);
+            StringBuilder sb = new StringBuilder();
+            while (sc.hasNextLine()) {
+                String current = sc.nextLine();
+                if (current.equalsIgnoreCase("<s>")) {
+                    statements.add(sb.toString());
+                    sb = new StringBuilder();
+                } else if (!current.equals("\n")) {
+                    sb.append(" " + current);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return indexFinder(statements);
+    }
+
     private boolean executeInternal(String sql, Object generatedKeysRequest) throws SQLException {
+        File file = new File("loggedStatements.txt");
+
+        // Log query to a file
+        if (sql.toLowerCase().startsWith("log ")) {
+            sql = sql.substring(3).trim();
+            try {
+                BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+                System.out.println("Logging " + sql);
+                writer.write(sql);
+                writer.newLine();
+                writer.write("<s>\n");
+                writer.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        //Evaluate log
+        if (sql.equalsIgnoreCase("eval log")) {
+            sql = "// Recommend building index on: " + getIndexRecommendation(file);
+        } else if (sql.equalsIgnoreCase("clear log")) {
+            try {
+                System.out.println("Clearing log");
+                PrintWriter pw = new PrintWriter(file);
+                pw.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            sql = "// Clear log";
+        }
+
+
         int id = getNextId(TraceObject.RESULT_SET);
         checkClosedForWrite();
         try {
