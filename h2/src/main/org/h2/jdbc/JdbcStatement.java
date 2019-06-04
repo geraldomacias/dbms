@@ -5,16 +5,14 @@
  */
 package org.h2.jdbc;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import org.h2.api.ErrorCode;
 import org.h2.command.CommandInterface;
@@ -225,52 +223,43 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
 
     // Given a file, this function parses sql statements.
     // Finally it recommends an index to be created and returns it to the user.
-    private String getIndexRecommendation(File file) {
-        String index = "";
-        ArrayList<String> statements = new ArrayList<>();
+    private void getIndexRecommendation(String filename) throws Exception {
+        List<String> queries = new ArrayList<>();
 
-        // Gather list of sql statements
-        try {
-            Scanner sc = new Scanner(file);
-            StringBuilder sb = new StringBuilder();
-            while (sc.hasNextLine()) {
-                String current = sc.nextLine();
-                if (current.equalsIgnoreCase("<s>")) {
-                    statements.add(sb.toString());
-                    sb = new StringBuilder();
-                } else if (!current.equals("\n")) {
-                    sb.append(" " + current);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        File file = new File(filename);
+        BufferedReader in = new BufferedReader(new FileReader(file));
+
+        String line;
+        while ((line = in.readLine()) != null) {
+            queries.add(line);
         }
 
-        // Fake return for now (compile)
-        return indexFinder(statements);
+        System.out.println(queries);
     }
 
-    private boolean executeInternal(String sql, Object generatedKeysRequest) throws SQLException {
-        File file = new File("loggedStatements.txt");
+    private boolean executeInternal(String sql, Object generatedKeysRequest) throws Exception {
+        final String filename = "loggedStatements.txt";
+        File file = new File(filename);
 
         // Log query to a file
         if (sql.toLowerCase().startsWith("log ")) {
             sql = sql.substring(3).trim();
             try {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
-                System.out.println("Logging " + sql);
-                writer.write(sql);
+                String loggedStatement = sql.replaceAll("\\s+"," ");
+                System.out.println("Logging " + loggedStatement);
+                writer.write(loggedStatement);
                 writer.newLine();
-                writer.write("<s>\n");
                 writer.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        //Evaluate log
-        if (sql.equalsIgnoreCase("evalutate log")) {
-            sql = "// " + getIndexRecommendation(file);
+        // View log
+        if (sql.equalsIgnoreCase("view log")) {
+            getIndexRecommendation(filename);
+            sql = "// Displaying log";
         }
 
         // Clear log
@@ -282,7 +271,7 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            sql = "// Clear log";
+            sql = "// Log cleared";
         }
 
 
