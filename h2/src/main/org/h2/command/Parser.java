@@ -63,6 +63,10 @@ import static org.h2.util.ParserUtil.WINDOW;
 import static org.h2.util.ParserUtil.WITH;
 import static org.h2.util.ParserUtil._ROWID_;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
@@ -128,28 +132,7 @@ import org.h2.command.ddl.SchemaCommand;
 import org.h2.command.ddl.SequenceOptions;
 import org.h2.command.ddl.SetComment;
 import org.h2.command.ddl.TruncateTable;
-import org.h2.command.dml.AlterTableSet;
-import org.h2.command.dml.BackupCommand;
-import org.h2.command.dml.Call;
-import org.h2.command.dml.CommandWithValues;
-import org.h2.command.dml.Delete;
-import org.h2.command.dml.ExecuteProcedure;
-import org.h2.command.dml.Explain;
-import org.h2.command.dml.Insert;
-import org.h2.command.dml.Merge;
-import org.h2.command.dml.MergeUsing;
-import org.h2.command.dml.NoOperation;
-import org.h2.command.dml.Query;
-import org.h2.command.dml.Replace;
-import org.h2.command.dml.RunScriptCommand;
-import org.h2.command.dml.ScriptCommand;
-import org.h2.command.dml.Select;
-import org.h2.command.dml.SelectOrderBy;
-import org.h2.command.dml.SelectUnion;
-import org.h2.command.dml.Set;
-import org.h2.command.dml.SetTypes;
-import org.h2.command.dml.TransactionCommand;
-import org.h2.command.dml.Update;
+import org.h2.command.dml.*;
 import org.h2.constraint.ConstraintActionType;
 import org.h2.engine.Constants;
 import org.h2.engine.Database;
@@ -754,18 +737,8 @@ public class Parser {
      * @return the prepared object
         WORK HERE h4!!!
      */
+
     Prepared parse(String sql) {
-        System.out.println(sql);
-
-        if (sql.equals("CREATE LOGGER")) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("// ");
-            sb.append(sql);
-            sql = sb.toString();
-
-            // TODO: Call create logger function here
-        }
-
         Prepared p;
         try {
             // first, try the fast variant
@@ -1050,7 +1023,6 @@ public class Parser {
         int type = CommandInterface.SHUTDOWN;
         if (readIf("IMMEDIATELY")) {
             type = CommandInterface.SHUTDOWN_IMMEDIATELY;
-        } else if (readIf("COMPACT")) {
             type = CommandInterface.SHUTDOWN_COMPACT;
         } else if (readIf("DEFRAG")) {
             type = CommandInterface.SHUTDOWN_DEFRAG;
