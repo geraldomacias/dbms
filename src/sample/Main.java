@@ -33,11 +33,15 @@ public class Main {
 
         Reader readerCommands =  new FileReader("commands.sql");
         Reader readerCreate = new FileReader("createTables.sql");
+        Reader readerLog = new FileReader("evalLog.sql");
+        Reader readerClearLog = new FileReader("clearLog.sql");
 
         long start = System.currentTimeMillis();
 
         script.runScript(readerCreate);
         script.runScript(readerCommands);
+        script.runScript(readerLog);
+        script.runScript(readerClearLog);
 
         long end = System.currentTimeMillis();
 
