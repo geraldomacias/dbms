@@ -319,6 +319,8 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
 
     // Given a hashmap, getMaxEntry returns the key with the largest value
     private void getMaxEntry(Map<String, Map<String, Integer>> map) {
+        String recommendations = "";
+
         for (String key1 : map.keySet()) {
             System.out.println();
             System.out.println("For table " + key1 + ":");
@@ -329,7 +331,6 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
             for (String key2 : map.get(key1).keySet()) {
                 System.out.printf(format, key2, map.get(key1).get(key2));
             }
-            System.out.println();
 
             String maxKey = "not found";
             int maxVal = 0;
@@ -341,9 +342,11 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
                 }
             }
 
-            System.out.println("Most used column for table " + key1 + ": " + maxKey);
-            System.out.println();
+            recommendations += "For table \"" + key1 + "\" we advise creating index on column \"" + maxKey + "\"\n";
         }
+        System.out.println();
+        System.out.println(recommendations);
+        System.out.println();
     }
 
     // Given a file, this function parses sql statements.
