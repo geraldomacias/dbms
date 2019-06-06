@@ -6,7 +6,7 @@ select * from movies
 select * from movies
 select * from users
 select * from users
-select * from movies
+select * from movies m where m.id=6
 select * from movies
 select * from movies where id=6
 select * from movies
@@ -22,3 +22,11 @@ select * from movies where id = 8
 select * from movies
 select * from users where id = 7
 select * from users
+select * from movies
+select * from movies
+select * from movies
+select * from users
+select * from movies where budget=30000000
+select * from movies where budget='30000000'
+select * from movies where name='Toy Story'
+select * from movies where name='Toy Story'
