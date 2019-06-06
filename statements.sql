@@ -1,400 +1,400 @@
-select *
+select firstName, scorea, scoreb, scorec
 From User
-where scorec < 37;
-
-select *
-From User
-where scoreb <= 166;
+where scoreb >= 277;
 
 select firstName, lastName, scorea
 From User
-where scorea >= 152;
-
-select scorea
-From User
-where scorea = 288;
+where scorec > 290;
 
 select firstName, scorea, scoreb, scorec
 From User
-where scoreb <= 142;
-
-select *
-From User
-where scoreb > 1;
-
-select firstName, scorea, scoreb, scorec
-From User
-where scorea <= 183;
-
-select scorea
-From User
-where scoreb <= 149;
-
-select *
-From User
-where scorea < 36;
-
-select scorea, uid
-From User
-where scoreb = 93;
-
-select scorea, uid
-From User
-where scoreb < 48;
+where scorec >= 30;
 
 select username, password, email, scorea
 From User
-where scorec = 269;
-
-select firstName, lastName, scorea
-From User
-where scorec > 95;
+where scoreb < 219;
 
 select *
 From User
-where scorec >= 161;
-
-select *
-From User
-where scorec < 19;
-
-select firstName, scorea, scoreb, scorec
-From User
-where scorea < 255;
-
-select scorea, uid
-From User
-where scoreb < 41;
-
-select scorea
-From User
-where scorea > 155;
-
-select firstName, scorea, scoreb, scorec
-From User
-where scoreb = 137;
-
-select *
-From User
-where scorec < 16;
-
-select firstName, lastName, scorea
-From User
-where scoreb <= 71;
-
-select scorea, uid
-From User
-where scorea <= 222;
-
-select firstName, lastName, scorea
-From User
-where scorea > 123;
-
-select scorea, uid
-From User
-where scoreb = 168;
-
-select firstName, scorea, scoreb, scorec
-From User
-where scorea >= 249;
-
-select *
-From User
-where scoreb > 108;
-
-select scorea
-From User
-where scorec > 282;
-
-select scorea
-From User
-where scoreb >= 81;
-
-select scorea
-From User
-where scoreb >= 26;
-
-select *
-From User
-where scoreb <= 150;
-
-select scorea
-From User
-where scoreb <= 70;
-
-select firstName, lastName, scorea
-From User
-where scoreb >= 28;
-
-select *
-From User
-where scoreb >= 136;
-
-select *
-From User
-where scoreb < 298;
-
-select scorea, uid
-From User
-where scoreb >= 274;
-
-select scorea, uid
-From User
-where scoreb <= 53;
-
-select firstName, scorea, scoreb, scorec
-From User
-where scorea <= 294;
-
-select *
-From User
-where scorea > 7;
-
-select firstName, lastName, scorea
-From User
-where scorec = 65;
-
-select scorea, uid
-From User
-where scorea <= 236;
-
-select scorea
-From User
-where scorea < 214;
-
-select firstName, lastName, scorea
-From User
-where scoreb >= 240;
-
-select *
-From User
-where scorec = 63;
-
-select firstName, scorea, scoreb, scorec
-From User
-where scorea < 221;
-
-select firstName, scorea, scoreb, scorec
-From User
-where scorec >= 253;
+where scoreb >= 65;
 
 select username, password, email, scorea
 From User
-where scoreb <= 52;
-
-select firstName, lastName, scorea
-From User
-where scorea > 157;
-
-select scorea, uid
-From User
-where scoreb > 6;
+where scorec = 25;
 
 select scorea
 From User
-where scoreb < 21;
-
-select username, password, email, scorea
-From User
-where scorea <= 156;
-
-select firstName, lastName, scorea
-From User
-where scorec = 43;
-
-select scorea
-From User
-where scoreb >= 281;
+where scorec < 14;
 
 select firstName, scorea, scoreb, scorec
 From User
-where scorea > 154;
+where scoreb > 77;
 
 select scorea
 From User
-where scorec <= 143;
-
-select scorea
-From User
-where scoreb = 280;
+where scorec >= 38;
 
 select firstName, lastName, scorea
 From User
-where scoreb < 259;
-
-select scorea
-From User
-where scorea <= 21;
-
-select *
-From User
-where scorea <= 168;
-
-select scorea, uid
-From User
-where scorec = 142;
+where scorec = 292;
 
 select firstName, lastName, scorea
 From User
-where scorec <= 91;
+where scorec < 264;
 
 select firstName, scorea, scoreb, scorec
 From User
-where scorec < 42;
-
-select *
-From User
-where scorea >= 197;
-
-select *
-From User
-where scorea = 178;
-
-select username, password, email, scorea
-From User
-where scorec >= 112;
-
-select scorea, uid
-From User
-where scorea > 170;
-
-select firstName, scorea, scoreb, scorec
-From User
-where scoreb > 233;
-
-select scorea, uid
-From User
-where scorec >= 170;
-
-select firstName, lastName, scorea
-From User
-where scoreb > 200;
-
-select *
-From User
-where scoreb = 6;
-
-select scorea, uid
-From User
-where scorea = 70;
+where scorea <= 32;
 
 select scorea
 From User
-where scorec > 26;
+where scoreb = 195;
+
+select firstName, lastName, scorea
+From User
+where scorec <= 54;
+
+select firstName, lastName, scorea
+From User
+where scorea >= 133;
 
 select *
 From User
-where scorec <= 23;
+where scorea >= 256;
 
-select username, password, email, scorea
+select scorea
 From User
-where scorec <= 177;
+where scoreb >= 284;
 
-select username, password, email, scorea
+select *
 From User
-where scorea <= 114;
+where scorec > 189;
+
+select *
+From User
+where scorea > 184;
 
 select scorea, uid
 From User
-where scoreb >= 195;
+where scorea >= 190;
+
+select *
+From User
+where scorec < 205;
 
 select username, password, email, scorea
 From User
-where scorea < 10;
-
-select username, password, email, scorea
-From User
-where scorea <= 65;
+where scoreb <= 154;
 
 select firstName, lastName, scorea
+From User
+where scoreb >= 202;
+
+select firstName, lastName, scorea
+From User
+where scoreb <= 225;
+
+select scorea
+From User
+where scoreb < 121;
+
+select *
+From User
+where scorea <= 264;
+
+select scorea, uid
+From User
+where scorea >= 85;
+
+select firstName, lastName, scorea
+From User
+where scoreb > 54;
+
+select firstName, scorea, scoreb, scorec
+From User
+where scorea < 185;
+
+select firstName, lastName, scorea
+From User
+where scorec >= 229;
+
+select username, password, email, scorea
+From User
+where scorea <= 246;
+
+select firstName, scorea, scoreb, scorec
+From User
+where scoreb > 136;
+
+select scorea
+From User
+where scoreb <= 225;
+
+select scorea, uid
+From User
+where scorec <= 222;
+
+select *
+From User
+where scoreb = 274;
+
+select scorea
+From User
+where scorea > 168;
+
+select scorea
+From User
+where scorea < 234;
+
+select *
+From User
+where scorea >= 78;
+
+select firstName, scorea, scoreb, scorec
+From User
+where scoreb < 36;
+
+select scorea, uid
+From User
+where scoreb = 143;
+
+select *
+From User
+where scorec = 276;
+
+select scorea
+From User
+where scorec <= 195;
+
+select scorea
+From User
+where scorec <= 226;
+
+select firstName, lastName, scorea
+From User
+where scorec >= 173;
+
+select firstName, scorea, scoreb, scorec
+From User
+where scorea <= 283;
+
+select scorea, uid
+From User
+where scorec > 57;
+
+select username, password, email, scorea
+From User
+where scoreb > 271;
+
+select scorea, uid
+From User
+where scorea <= 82;
+
+select scorea
+From User
+where scorea >= 8;
+
+select scorea
+From User
+where scorea >= 182;
+
+select scorea
+From User
+where scoreb < 265;
+
+select firstName, scorea, scoreb, scorec
+From User
+where scorec = 262;
+
+select username, password, email, scorea
+From User
+where scorea = 77;
+
+select firstName, lastName, scorea
+From User
+where scorea < 208;
+
+select *
+From User
+where scorec = 6;
+
+select scorea
+From User
+where scorea < 158;
+
+select *
+From User
+where scorec < 117;
+
+select scorea, uid
+From User
+where scorea <= 142;
+
+select scorea
+From User
+where scorec >= 85;
+
+select *
+From User
+where scorea < 81;
+
+select scorea, uid
+From User
+where scorea = 166;
+
+select *
 From User
 where scoreb = 180;
 
 select scorea, uid
 From User
-where scoreb >= 132;
-
-select firstName, lastName, scorea
-From User
-where scoreb <= 48;
-
-select *
-From User
-where scoreb <= 107;
-
-select *
-From User
-where scorec <= 294;
-
-select firstName, scorea, scoreb, scorec
-From User
-where scoreb <= 169;
-
-select scorea, uid
-From User
-where scoreb <= 80;
-
-select scorea
-From User
-where scorec = 300;
-
-select scorea, uid
-From User
-where scorea = 298;
+where scorec > 24;
 
 select username, password, email, scorea
 From User
-where scorec <= 102;
+where scoreb = 114;
 
-select scorea, uid
+select firstName, lastName, scorea
 From User
-where scoreb > 164;
-
-select *
-From User
-where scoreb = 71;
+where scorea < 164;
 
 select scorea
 From User
-where scorec < 189;
+where scorec > 163;
+
+select scorea
+From User
+where scoreb <= 149;
+
+select username, password, email, scorea
+From User
+where scorec >= 153;
 
 select *
 From User
-where scorea >= 57;
-
-select *
-From User
-where scoreb <= 22;
+where scorea = 11;
 
 select firstName, lastName, scorea
+From User
+where scorec < 71;
+
+select username, password, email, scorea
+From User
+where scorea >= 55;
+
+select scorea
+From User
+where scoreb >= 298;
+
+select scorea, uid
+From User
+where scorec > 72;
+
+select username, password, email, scorea
+From User
+where scorec <= 16;
+
+select scorea, uid
+From User
+where scoreb > 174;
+
+select firstName, lastName, scorea
+From User
+where scorea = 133;
+
+select firstName, scorea, scoreb, scorec
+From User
+where scorec = 220;
+
+select scorea, uid
+From User
+where scorea <= 63;
+
+select username, password, email, scorea
+From User
+where scoreb < 255;
+
+select username, password, email, scorea
+From User
+where scorec < 290;
+
+select username, password, email, scorea
+From User
+where scorea <= 298;
+
+select firstName, scorea, scoreb, scorec
+From User
+where scorec < 135;
+
+select firstName, lastName, scorea
+From User
+where scorec <= 153;
+
+select *
+From User
+where scorea <= 122;
+
+select firstName, scorea, scoreb, scorec
+From User
+where scoreb < 108;
+
+select *
+From User
+where scorec < 282;
+
+select firstName, scorea, scoreb, scorec
+From User
+where scoreb = 141;
+
+select firstName, lastName, scorea
+From User
+where scorec <= 236;
+
+select scorea
+From User
+where scorea < 253;
+
+select scorea, uid
+From User
+where scorea >= 49;
+
+select firstName, scorea, scoreb, scorec
+From User
+where scoreb > 8;
+
+select scorea
 From User
 where scorec = 195;
 
-select *
-From User
-where scoreb = 52;
-
 select username, password, email, scorea
 From User
-where scoreb > 209;
+where scoreb <= 259;
+
+select *
+From User
+where scorec <= 202;
 
 select firstName, scorea, scoreb, scorec
 From User
-where scorea <= 199;
-
-select scorea, uid
-From User
-where scorea = 91;
-
-select firstName, lastName, scorea
-From User
-where scoreb = 236;
-
-select scorea
-From User
-where scorea >= 200;
+where scorec >= 241;
 
 select *
 From User
-where scorec >= 27;
+where scorea = 51;
+
+select scorea
+From User
+where scoreb > 261;
+
+select username, password, email, scorea
+From User
+where scorec < 175;
+
+select firstName, scorea, scoreb, scorec
+From User
+where scoreb < 100;
+
+select scorea
+From User
+where scoreb >= 53;
 

@@ -35,11 +35,11 @@ public class Main {
         Reader readerInserts = new FileReader("inserts.sql");
         Reader readerCreate = new FileReader("createTables.sql");
         //Reader readerLog = new FileReader("evalLog.sql");
-        Reader readerClearLog = new FileReader("clearLog.sql");
+        //Reader readerClearLog = new FileReader("clearLog.sql");
 
         long start = System.currentTimeMillis();
 
-        script.runScript(readerClearLog);
+        //script.runScript(readerClearLog);
         script.runScript(readerCreate);
         script.runScript(readerInserts);
         //script.runScript(readerSelects);

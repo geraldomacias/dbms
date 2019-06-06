@@ -23,10 +23,10 @@
 
 2. Run Main.java in IntelliJ to both create the tables and insert the tests.
 
-3. Run "java insertSelections.java > commands.sql" to create both a commands.sql file with log statements for the modified H2 and a statements.sql file which just has the select statements
+3. Use "clear log" to clear the logged statements from the log file to reset for a fresh run.
 
-4. Using the H2 console, copy and paste the commands.sql file context into the console.
+4. Run "java insertSelections.java > commands.sql" to create both a commands.sql file with log statements for the modified H2 and a statements.sql file which just has the select statements
 
-5. Enter "eval log" and view the terminal for suggestions on the index.
+5. Using the H2 console, copy and paste the commands.sql file context into the console.
 
-6. Use "clear log" to clear the logged statements from the log file to reset for a fresh run.
+6. Enter "eval log" and view the terminal for suggestions on the index.
