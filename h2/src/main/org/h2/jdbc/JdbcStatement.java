@@ -26,6 +26,7 @@ import org.h2.message.TraceObject;
 import org.h2.result.ResultInterface;
 import org.h2.result.ResultWithGeneratedKeys;
 import org.h2.result.SimpleResult;
+import org.h2.table.Column;
 import org.h2.util.ParserUtil;
 import org.h2.util.StringUtils;
 import org.h2.util.Utils;
@@ -304,7 +305,7 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
     // convert hashmap into array with pairs
     // Use comparator so we can sort.Array()
     // Return top 10% of elements to user
-    private void indexFinder(ArrayList<String> statements) {
+    private void indexFinder(ArrayList<String> statements, File resultFile) throws Exception {
 
         Map<String, Map<String, Integer>> map = new HashMap<>();
 
@@ -314,23 +315,38 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
             temp.process();
         }
 
-        getMaxEntry(map);
+        getMaxEntry(map, resultFile);
     }
 
     // Given a hashmap, getMaxEntry returns the key with the largest value
-    private void getMaxEntry(Map<String, Map<String, Integer>> map) {
+    private void getMaxEntry(Map<String, Map<String, Integer>> map, File resultFile) throws Exception{
+        BufferedWriter writer = new BufferedWriter(new FileWriter(resultFile));
         String recommendations = "";
 
         for (String key1 : map.keySet()) {
             System.out.println();
+
             System.out.println("For table " + key1 + ":");
-            String format = "%-25s%5s%n";
-            System.out.printf(format, "Column", "Count");
+            writer.write("For table " + key1 + ":");
+            writer.newLine();
+
+            String format = "%-25s%5s";
+            String header = String.format(format, "Column", "Count");
+            System.out.println(header);
+            writer.write(header);
+            writer.newLine();
+
             System.out.println("------------------------------");
+            writer.write("------------------------------");
+            writer.newLine();
 
             for (String key2 : map.get(key1).keySet()) {
-                System.out.printf(format, key2, map.get(key1).get(key2));
+                String entry = String.format(format, key2, map.get(key1).get(key2));
+                System.out.println(entry);
+                writer.write(entry);
+                writer.newLine();
             }
+            writer.newLine();
 
             String maxKey = "not found";
             int maxVal = 0;
@@ -347,31 +363,37 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
         System.out.println();
         System.out.println(recommendations);
         System.out.println();
+        writer.write(recommendations);
+        writer.newLine();
+        writer.close();
     }
 
     // Given a file, this function parses sql statements.
     // Finally it recommends an index to be created and returns it to the user.
-    private void getIndexRecommendation(File file) throws Exception {
+    private void getIndexRecommendation(File logFile, File resultFile) throws Exception {
         ArrayList<String> statements = new ArrayList<>();
-        BufferedReader in = new BufferedReader(new FileReader(file));
+        BufferedReader in = new BufferedReader(new FileReader(logFile));
 
         String line;
         while ((line = in.readLine()) != null) {
             statements.add(line);
         }
 
-        indexFinder(statements);
+        indexFinder(statements, resultFile);
     }
 
     private boolean executeInternal(String sql, Object generatedKeysRequest) throws Exception {
-        final String filename = "loggedStatements.txt";
-        File file = new File(filename);
+        final String logFilename = "loggedStatements.txt";
+        final String resultFilename = "logResults.txt";
+
+        File logFile = new File(logFilename);
+        File resultFile = new File(resultFilename);
 
         // Log query to a file
         if (sql.toLowerCase().startsWith("log ")) {
             sql = sql.substring(3).trim();
             try {
-                BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+                BufferedWriter writer = new BufferedWriter(new FileWriter(logFile, true));
                 String loggedStatement = sql.replaceAll("\\s+"," ");
                 System.out.println("Logging " + loggedStatement);
                 writer.write(loggedStatement);
@@ -383,13 +405,13 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
         }
 
         if (sql.equalsIgnoreCase("eval log")) {
-            getIndexRecommendation(file);
+            getIndexRecommendation(logFile, resultFile);
             sql = "//";
 
         } else if (sql.equalsIgnoreCase("clear log")) {
             try {
                 System.out.println("Clearing log");
-                PrintWriter pw = new PrintWriter(file);
+                PrintWriter pw = new PrintWriter(logFile);
                 pw.close();
             } catch (Exception e) {
                 e.printStackTrace();
