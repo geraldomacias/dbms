@@ -1,5 +1,3 @@
-
-
 import java.util.Random;
 import java.io.IOException;
 import java.io.*;
@@ -16,21 +14,21 @@ public class insertSelections {
    public static void main(String[] args) {
       try{
          
-         File file = new File("out2");
+         File file = new File("statements.sql");
          BufferedWriter writer = new BufferedWriter(new FileWriter(file));
          
          int i = 0;
          String temp;
          while(i < 200000){
             String s = writecc(writer);
-             
+            writer.append(s);
             i++;
             System.out.println("log ");
             System.out.println(s);
-            System.out.println("");
 
             
          }
+         writer.close();
          return;
 
          
@@ -69,7 +67,7 @@ public class insertSelections {
       String srand = Integer.toString(rand);
       temp = temp.concat((srand));
       
-      temp = temp.concat(";");
+      temp = temp.concat(";\n\n");
       
       return temp;
       

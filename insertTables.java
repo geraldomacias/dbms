@@ -23,7 +23,6 @@ public class insertTables {
             String s = writecc(writer);
              
             i++;
-            System.out.println("log ");
             System.out.println(s);
             System.out.println("");
             
