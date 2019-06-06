@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.HashMap;
 import java.util.regex.Pattern;
@@ -225,12 +226,12 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
 
     class MySQL {
 
-        HashMap<String, Integer> map;
-        String sql, tblCol;
+        Map<String, Map<String, Integer>> map;
+        String sql, table, column;
         QueryType queryType;
 
 
-        public MySQL(HashMap<String, Integer> map, String sql) {
+        private MySQL(Map<String, Map<String, Integer>> map, String sql) {
             this.map = map;
             this.sql = sql.toLowerCase();
         }
@@ -243,27 +244,30 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
         //      Nested sql statements
         // per single query
         public void process() {
-            String tblCol;
-
             queryType = processQueryType();
-
             processTable();
-
             appendToMap();
-
         }
 
         private void appendToMap() {
-            if (!map.containsKey(tblCol)) {
-                map.put(tblCol, 1);
+            if (!map.containsKey(table)) {
+                Map<String, Integer> temp = new HashMap<>();
+                temp.put(column, 1);
+                map.put(table, temp);
             } else {
-                map.put(tblCol, map.get(tblCol) + 1);
+                if (!(map.get(table).containsKey(column))) {
+                    Map<String, Integer> temp = map.get(table);
+                    temp.put(column, 1);
+                    map.put(table, temp);
+                } else {
+                    Map<String, Integer> temp = map.get(table);
+                    temp.put(column, temp.get(column) + 1);
+                }
             }
         }
 
         // Given a sql statement, locate the "from" and then get the next word as the table.
         private void processTable() {
-            String table, column;
             table = column = "n/a";
 
             Pattern p = Pattern.compile("(from|where)\\s*(\\w+)");
@@ -279,22 +283,18 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
                     System.out.println(m.group(1) + "\t" + m.group(2));
                 }
             }
-            tblCol = table + "." + column;
         }
 
 
         // Given a sql string, return a QueryType depending if a
         // select, update, delete, or insert is found.
         private QueryType processQueryType() {
-
             if (sql.contains("select")) return QueryType.SELECT;
             else if (sql.contains("update")) return QueryType.UPDATE;
             else if (sql.contains("delete")) return QueryType.DELETE;
             else if (sql.contains("insert")) return QueryType.INSERT;
             else return QueryType.UNKNOWN;
         }
-
-
     }
 
 
@@ -304,45 +304,54 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
     // convert hashmap into array with pairs
     // Use comparator so we can sort.Array()
     // Return top 10% of elements to user
-    private String indexFinder(ArrayList<String> statements) {
+    private void indexFinder(ArrayList<String> statements) {
 
-        HashMap<String, Integer> map = new HashMap<>();
-        ArrayList<MySQL> sqls = new ArrayList<>();
-        String recommendation;
+        Map<String, Map<String, Integer>> map = new HashMap<>();
 
         //Helper function
         for (String statement : statements) {
             MySQL temp = new MySQL(map, statement);
             temp.process();
-            sqls.add(temp);
         }
 
-        recommendation = getMaxEntry(map);
-        System.out.println("Inside index finder");
-        System.out.println("recommendation: " + recommendation);
-        return recommendation;
+        getMaxEntry(map);
     }
 
     // Given a hashmap, getMaxEntry returns the key with the largest value
-    private String getMaxEntry(HashMap<String, Integer> map) {
-        System.out.println("Inside getMaxEntry");
-        System.out.println(map);
+    private void getMaxEntry(Map<String, Map<String, Integer>> map) {
+        String recommendations = "";
 
-        String maxKey = "not found";
-        int maxVal = 0;
+        for (String key1 : map.keySet()) {
+            System.out.println();
+            System.out.println("For table " + key1 + ":");
+            String format = "%-25s%5s%n";
+            System.out.printf(format, "Column", "Count");
+            System.out.println("------------------------------");
 
-        for (String s : map.keySet()) {
-            if (map.get(s) >= maxVal) {
-                maxKey = s;
-                maxVal = map.get(s);
+            for (String key2 : map.get(key1).keySet()) {
+                System.out.printf(format, key2, map.get(key1).get(key2));
             }
+
+            String maxKey = "not found";
+            int maxVal = 0;
+
+            for (String s : map.get(key1).keySet()) {
+                if (!s.equals("n/a") && map.get(key1).get(s) >= maxVal) {
+                    maxKey = s;
+                    maxVal = map.get(key1).get(s);
+                }
+            }
+
+            recommendations += "For table \"" + key1 + "\" we advise creating index on column \"" + maxKey + "\"\n";
         }
-        return maxKey;
+        System.out.println();
+        System.out.println(recommendations);
+        System.out.println();
     }
 
     // Given a file, this function parses sql statements.
     // Finally it recommends an index to be created and returns it to the user.
-    private String getIndexRecommendation(File file) throws Exception {
+    private void getIndexRecommendation(File file) throws Exception {
         ArrayList<String> statements = new ArrayList<>();
         BufferedReader in = new BufferedReader(new FileReader(file));
 
@@ -351,7 +360,7 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
             statements.add(line);
         }
 
-        return indexFinder(statements);
+        indexFinder(statements);
     }
 
     private boolean executeInternal(String sql, Object generatedKeysRequest) throws Exception {
@@ -373,9 +382,10 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
             }
         }
 
-        // Evaluate log
         if (sql.equalsIgnoreCase("eval log")) {
-            sql = "// Recommend building index on: " + getIndexRecommendation(file);
+            getIndexRecommendation(file);
+            sql = "//";
+
         } else if (sql.equalsIgnoreCase("clear log")) {
             try {
                 System.out.println("Clearing log");
@@ -384,7 +394,7 @@ public class JdbcStatement extends TraceObject implements Statement, JdbcStateme
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            sql = "// Clear log";
+            sql = "//";
         }
 
 
