@@ -29,4 +29,4 @@
 
 5. Enter "eval log" and view the terminal for suggestions on the index.
 
-6. Use "clear log to clear the logged statements from the log file to reset for a fresh run."
+6. Use "clear log" to clear the logged statements from the log file to reset for a fresh run.
