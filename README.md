@@ -19,12 +19,14 @@
 ### To Test
 0. Use IntelliJ IDEA to open the repository.
 
-1. Run "java insertTables.java > commands.sql" in a terminal inside the dbms repository
+1. Run "java insertTables.java > inserts.sql" in a terminal inside the dbms repository
 
-2. Run Main.java in IntelliJ and the time will be output below 
+2. Run Main.java in IntelliJ to both create the tables and insert the tests.
 
-Notes:
-*** Index recommendations ***
-Features to implement:
-1. Log sql statements
-2. Parse sql statements and check for frequent table and column
+3. Run "java insertSelections.java > commands.sql" to create both a commands.sql file with log statements for the modified H2 and a statements.sql file which just has the select statements
+
+4. Using the H2 console, copy and paste the commands.sql file context into the console.
+
+5. Enter "eval log" and view the terminal for suggestions on the index.
+
+6. Use "clear log to clear the logged statements from the log file to reset for a fresh run."

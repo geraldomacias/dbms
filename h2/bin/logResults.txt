@@ -1,0 +1,11 @@
+For table user:
+Column                   Count
+------------------------------
+scoreb                      37
+
+scorec                      31
+
+scorea                      32
+
+For table "user" we advise creating index on column "scoreb"
+

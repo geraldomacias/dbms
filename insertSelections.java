@@ -19,7 +19,7 @@ public class insertSelections {
          
          int i = 0;
          String temp;
-         while(i < 200000){
+         while(i < 100){
             String s = writecc(writer);
             writer.append(s);
             i++;
@@ -40,8 +40,8 @@ public class insertSelections {
 
    }
    public static String writecc(BufferedWriter writer) {
-      String[] sybols = {" = ", " < ", " > ", " <= ", " >= ", " != "};
-      String[] types = {"*\n", "scorea\n", "scorea, uid\n", "firstName, lastName, scorea\n", "ussername, password, email, scorea\n", "firstName, scorea, scoreb, scorec\n"};
+      String[] sybols = {" = ", " < ", " > ", " <= ", " >= "};
+      String[] types = {"*\n", "scorea\n", "scorea, uid\n", "firstName, lastName, scorea\n", "username, password, email, scorea\n", "firstName, scorea, scoreb, scorec\n"};
       String[] num = {"scorea", "scoreb", "scorec"};
       Random random = new Random();
       String temp = "select ";
